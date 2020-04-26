@@ -80,31 +80,4 @@ public class GoToFileAction extends GotoActionBase implements DumbAware {
             return null;
         }
     }
-
-    /*
-    protected <T> void showNavigationPopup(AnActionEvent e, ChooseByNameModel model, final GotoActionCallback<T> callback,
-                                           @Nullable final String findUsagesTitle, boolean useSelectionFromEditor,
-                                           final boolean allowMultipleSelection, final ChooseByNameItemProvider itemProvider) {
-
-        final Project project = e.getData(CommonDataKeys.PROJECT);
-        boolean mayRequestOpenInCurrentWindow = model.willOpenEditor()
-                && FileEditorManagerEx.getInstanceEx(Objects.requireNonNull(project)).hasSplitOrUndockedWindows();
-
-        Pair<String, Integer> start = getInitialText(useSelectionFromEditor, e);
-        String copiedURL = tryFindCopiedURL();
-        String predefinedText = start.first == null ? copiedURL : start.first;
-
-        showNavigationPopup(callback, findUsagesTitle, GoToFilePopup.createPopup(project, model, itemProvider, predefinedText,
-                mayRequestOpenInCurrentWindow, 0), allowMultipleSelection);
-    }
-
-    private String tryFindCopiedURL() {
-        String contents = CopyPasteManager.getInstance().getContents(DataFlavor.stringFlavor);
-        if (contents == null) {
-            return null;
-        }
-        contents = contents.trim();
-        return contents;
-    }
-    */
 }

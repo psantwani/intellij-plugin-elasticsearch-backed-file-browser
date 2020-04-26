@@ -56,6 +56,9 @@ public class ElasticSearchClient {
         }
     }
 
+    /*
+        TODO: Remove Fievel hardcoding. Use project name as index name and allow browsing on multiple projects.
+     */
     public static SearchResponse search(Project project, String term){
         logger.debug("Querying ElasticSearch for: " + term);
 
