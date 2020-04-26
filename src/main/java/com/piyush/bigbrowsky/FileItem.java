@@ -1,33 +1,47 @@
 package com.piyush.bigbrowsky;
 
-import com.fasterxml.jackson.databind.Module;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.NavigationItem;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.util.IconLoader;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.pom.Navigatable;
-import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.kotlin.psi.KtClass;
-import org.jetbrains.kotlin.psi.KtNamedFunction;
 
 import javax.swing.*;
 
 public class FileItem implements NavigationItem {
 
-    private PsiMethod psiMethod;
-    private PsiElement psiElement;
-    private Module module;
+    private static final Project project = ProjectManager.getInstance().getOpenProjects()[0];
 
-    private String fileName;
-    private String filePath;
-
+    private final String fileName;
+    private final String virtualPath;
+    private String realPath;
     private Navigatable navigationElement;
+
+    public FileItem(PsiElement psiElement, String fileName, String virtualPath, String realPath) {
+        this.fileName = fileName;
+        this.virtualPath = virtualPath;
+        this.realPath = realPath;
+
+        if (psiElement instanceof Navigatable) {
+            navigationElement = (Navigatable) psiElement;
+        }
+    }
 
     @Nullable
     @Override
     public String getName() {
         return this.fileName;
+    }
+
+    public String getPath(){
+        return this.virtualPath;
     }
 
     @Nullable
@@ -38,49 +52,42 @@ public class FileItem implements NavigationItem {
 
     @Override
     public void navigate(boolean requestFocus) {
+        VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByPath(realPath);
+        if(virtualFile != null){
+            navigationElement = PsiManager.getInstance(project).findFile(virtualFile);
+        }
 
+        if(navigationElement != null){
+            navigationElement.navigate(requestFocus);
+        }
     }
 
     @Override
     public boolean canNavigate() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canNavigateToSource() {
-        return false;
+        return true;
     }
 
     private class RestServiceItemPresentation implements ItemPresentation {
 
         @Nullable
         public String getPresentableText() {
-            return fileName;
+            return " " + fileName;
         }
 
         @Nullable
         public String getLocationString() {
-            String fileName = psiElement.getContainingFile().getName();
-            String location = null;
-
-            if (psiElement instanceof PsiMethod) {
-                PsiMethod psiMethod = ((PsiMethod) psiElement);
-                ;
-                location = psiMethod.getContainingClass().getName().concat("#").concat(psiMethod.getName());
-            } else if (psiElement instanceof KtNamedFunction) {
-                KtNamedFunction ktNamedFunction = (KtNamedFunction) FileItem.this.psiElement;
-                String className = ((KtClass) psiElement.getParent().getParent()).getName();
-                location = className.concat("#").concat(ktNamedFunction.getName());
-            }
-
-            return "(" + location + ")";
+            return "(" + virtualPath + ")";
         }
 
         @Nullable
         @Override
         public Icon getIcon(boolean unused) {
-//            System.out.println(unused + "  " + this.getPresentableText());
-            return IconLoader.getIcon("/icons/service.png");
+            return IconLoader.getIcon("/icons/search.png");
         }
     }
 }

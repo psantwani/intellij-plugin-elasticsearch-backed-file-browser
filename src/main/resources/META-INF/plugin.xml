@@ -20,7 +20,7 @@
                 class="com.piyush.bigbrowsky.GoToFileAction" text="Enter file name"
                 description="Big Browsky">
             <add-to-group group-id="GoToTargetEx" anchor="first"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl BACK_SLASH"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl P"/>
         </action>
     </actions>
 </idea-plugin>

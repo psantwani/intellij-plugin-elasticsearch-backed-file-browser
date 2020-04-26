@@ -1,6 +1,6 @@
 package com.piyush.bigbrowsky;
 
-import com.intellij.ide.util.gotoByName.ChooseByNameModel;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.intellij.ide.util.gotoByName.CustomMatcherModel;
 import com.intellij.ide.util.gotoByName.FilteringGotoByModel;
 import com.intellij.navigation.ChooseByNameContributor;
@@ -10,7 +10,6 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.util.Collection;
 
 public class GoToFileModel extends FilteringGotoByModel<String> implements DumbAware, CustomMatcherModel {
@@ -22,7 +21,10 @@ public class GoToFileModel extends FilteringGotoByModel<String> implements DumbA
     @Nullable
     @Override
     protected String filterValueFor(NavigationItem item) {
-        System.out.println("filterValueFor: " + item.toString());
+        if (item instanceof FileItem) {
+            return item.getName();
+        }
+
         return null;
     }
 
@@ -33,14 +35,20 @@ public class GoToFileModel extends FilteringGotoByModel<String> implements DumbA
     }
 
     @Override
-    public String getPromptText() {
-        return "Enter file name :";
+    protected boolean acceptItem(final NavigationItem item){
+        return true;
     }
+
+    @Override
+    public String getPromptText() {
+        return "Enter filename";
+    }
+
 
     @NotNull
     @Override
     public String getNotInMessage() {
-        return "Match not found";
+        return "File not found";
     }
 
     @NotNull
@@ -52,18 +60,17 @@ public class GoToFileModel extends FilteringGotoByModel<String> implements DumbA
     @Nullable
     @Override
     public String getCheckBoxName() {
-        return "Only This Module";
-        // return null;
+        return null;
     }
 
     @Override
     public boolean loadInitialCheckBoxState() {
-        return false;
+        return true;
     }
 
     @Override
     public void saveInitialCheckBoxState(boolean state) {
-
+        return;
     }
 
     @NotNull
@@ -83,10 +90,15 @@ public class GoToFileModel extends FilteringGotoByModel<String> implements DumbA
         return true;
     }
 
+    /* TODO: Write JavaDoc */
     @Override
     public boolean matches(@NotNull String popupItem, @NotNull String userPattern) {
-        System.out.println(popupItem);
-        return false;
+        return true;
     }
 
+    @NotNull
+    @Override
+    public String removeModelSpecificMarkup(@NotNull String pattern) {
+        return super.removeModelSpecificMarkup(pattern);
+    }
 }

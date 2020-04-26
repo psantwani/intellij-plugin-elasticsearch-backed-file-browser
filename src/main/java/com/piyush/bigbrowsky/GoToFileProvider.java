@@ -12,7 +12,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+// Used by CustomPopup only.
 public class GoToFileProvider extends DefaultChooseByNameItemProvider {
+
     public GoToFileProvider(@Nullable PsiElement context) {
         super(context);
     }
@@ -22,7 +24,6 @@ public class GoToFileProvider extends DefaultChooseByNameItemProvider {
     public List<String> filterNames(@NotNull ChooseByNameBase base, @NotNull String[] names, @NotNull String pattern) {
         return super.filterNames(base, names, pattern);
     }
-
 
     @NotNull
     private static MinusculeMatcher buildPatternMatcher(@NotNull String pattern, @NotNull NameUtil.MatchingCaseSensitivity caseSensitivity) {

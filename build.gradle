@@ -61,7 +61,8 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
     compile("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
     compile("org.apache.commons:commons-lang3:$commons_lang3_version")
-    compile files('lib/kotlin-compiler-1.3.72.jar')
+    compileOnly 'org.jetbrains.kotlin:kotlin-compiler:1.3.72'
+    compile('org.elasticsearch.client:elasticsearch-rest-high-level-client:7.6.2')
 
     testImplementation('org.spekframework.spek2:spek-dsl-jvm:2.0.10') {
         exclude group: 'org.jetbrains.kotlin'
@@ -84,8 +85,9 @@ jacocoTestReport {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '2019.3.3'
+    version '2020.1'
     pluginName "Big Browsky"
+    intellij.updateSinceUntilBuild false
     type 'IC'
 }
 

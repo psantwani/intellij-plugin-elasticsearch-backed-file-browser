@@ -9,33 +9,11 @@ import com.intellij.openapi.util.text.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+// Used by CustomPopup only.
 public class GoToFilePopup extends ChooseByNamePopup {
-    public static final Key<GoToFilePopup> CHOOSE_BY_NAME_POPUP_IN_PROJECT_KEY = new Key<>("ChooseByNamePopup");
 
     protected GoToFilePopup(@Nullable Project project, @NotNull ChooseByNameModel model, @NotNull ChooseByNameItemProvider provider, @Nullable ChooseByNamePopup oldPopup, @Nullable String predefinedText, boolean mayRequestOpenInCurrentWindow, int initialIndex) {
         super(project, model, provider, oldPopup, predefinedText, mayRequestOpenInCurrentWindow, initialIndex);
-    }
-
-    public static GoToFilePopup createPopup(final Project project,
-                                                           @NotNull final ChooseByNameModel model,
-                                                           @NotNull ChooseByNameItemProvider provider,
-                                                           @Nullable final String predefinedText,
-                                                           boolean mayRequestOpenInCurrentWindow,
-                                                           final int initialIndex) {
-        if (StringUtil.isEmptyOrSpaces(predefinedText)) {
-            return new GoToFilePopup(project, model, provider, null, predefinedText, mayRequestOpenInCurrentWindow, initialIndex);
-        }
-
-        final GoToFilePopup oldPopup = project == null ? null : project.getUserData(CHOOSE_BY_NAME_POPUP_IN_PROJECT_KEY);
-        if (oldPopup != null) {
-            oldPopup.close(false);
-        }
-        GoToFilePopup newPopup = new GoToFilePopup(project, model, provider, oldPopup, predefinedText, mayRequestOpenInCurrentWindow, initialIndex);
-
-        if (project != null) {
-            project.putUserData(CHOOSE_BY_NAME_POPUP_IN_PROJECT_KEY, newPopup);
-        }
-        return newPopup;
     }
 
     @Override
@@ -44,7 +22,6 @@ public class GoToFilePopup extends ChooseByNamePopup {
         return getTransformedPattern(pattern, model);
     }
 
-    //TODO: resolve PathVariable
     public static String getTransformedPattern(String pattern, ChooseByNameModel model) {
         if (! (model instanceof GoToFileModel) ) {
             return pattern;
