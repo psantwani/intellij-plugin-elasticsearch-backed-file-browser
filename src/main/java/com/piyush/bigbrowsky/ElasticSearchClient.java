@@ -1,5 +1,6 @@
 package com.piyush.bigbrowsky;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
@@ -55,7 +56,7 @@ public class ElasticSearchClient {
         }
     }
 
-    public static SearchResponse search(String term){
+    public static SearchResponse search(Project project, String term){
         logger.debug("Querying ElasticSearch for: " + term);
 
         SearchRequest searchRequest = new SearchRequest("fievel", "fievel_folder");
@@ -82,7 +83,7 @@ public class ElasticSearchClient {
             return client.search(searchRequest, RequestOptions.DEFAULT);
         } catch (ConnectException connectException) {
             logger.error(connectException.getMessage(), connectException);
-            Utils.createPopupWithMessage("Failed to connect to ElasticSearch.", MessageType.ERROR);
+            Utils.createPopupWithMessage(project,"Failed to connect to ElasticSearch.", MessageType.ERROR);
         } catch (Throwable throwable){
             logger.error(throwable.getMessage(), throwable);
         }

@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>org.piyush.big-browsky</id>
-    <name>BigBrowsky</name>
+    <name>Big Browsky</name>
     <version>1.0-SNAPSHOT</version>
     <vendor email="piyushsantwani@uber.com" url="https://github.com/psantwani">Piyush Santwani</vendor>
 
@@ -17,7 +17,7 @@
 
     <actions>
         <action id="GoToFileAction"
-                class="com.piyush.bigbrowsky.GoToFileAction" text="Enter file name"
+                class="com.piyush.bigbrowsky.GoToFileAction" text="Big Browsky"
                 description="Big Browsky">
             <add-to-group group-id="GoToTargetEx" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl P"/>

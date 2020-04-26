@@ -3,13 +3,11 @@ package com.piyush.bigbrowsky;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.pom.Navigatable;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,14 +15,14 @@ import javax.swing.*;
 
 public class FileItem implements NavigationItem {
 
-    private static final Project project = ProjectManager.getInstance().getOpenProjects()[0];
-
     private final String fileName;
     private final String virtualPath;
-    private String realPath;
+    private final Project project;
+    private final String realPath;
     private Navigatable navigationElement;
 
-    public FileItem(PsiElement psiElement, String fileName, String virtualPath, String realPath) {
+    public FileItem(Project project, PsiElement psiElement, String fileName, String virtualPath, String realPath) {
+        this.project = project;
         this.fileName = fileName;
         this.virtualPath = virtualPath;
         this.realPath = realPath;

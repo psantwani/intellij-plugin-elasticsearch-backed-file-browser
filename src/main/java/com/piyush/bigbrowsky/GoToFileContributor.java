@@ -31,7 +31,7 @@ public class GoToFileContributor implements ChooseByNameContributor {
         Map fileMap, pathMap;
         String fileName, virtualPath, realPath;
 
-        SearchResponse searchResponse = ElasticSearchClient.search(pattern);
+        SearchResponse searchResponse = ElasticSearchClient.search(project, pattern);
         if(searchResponse == null){
             return new NavigationItem[0];
         }
@@ -60,7 +60,7 @@ public class GoToFileContributor implements ChooseByNameContributor {
                 }
                  */
 
-                FileItem fileItem = new FileItem(null, fileName, virtualPath, realPath);
+                FileItem fileItem = new FileItem(project,null, fileName, virtualPath, realPath);
                 fileItems.add(fileItem);
 
             } catch (Exception e) {
