@@ -19,6 +19,7 @@ import java.util.List;
 public class GoToFileAction extends GotoActionBase implements DumbAware {
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
+    private static DataSource dataSource = null;
 
     public GoToFileAction(){}
 
@@ -27,9 +28,12 @@ public class GoToFileAction extends GotoActionBase implements DumbAware {
 
         Project project = e.getProject();
         if (project == null) return;
-        ElasticSearchClient.connect();
 
-        ChooseByNameContributor[] chooseByNameContributors = { new GoToFileContributor() };
+        boolean isElasticSearchMode = Utils.checkIfElasticSearchModeIsEnabled();
+        dataSource = isElasticSearchMode ? new ElasticSearchClient(project) : new DirectoryWatcherClient(project);
+        dataSource.connect();
+
+        ChooseByNameContributor[] chooseByNameContributors = { new GoToFileContributor(dataSource) };
         final GoToFileModel model = new GoToFileModel(project, chooseByNameContributors);
 
         GotoActionCallback<String> callback = new GotoActionCallback<String>() {
@@ -49,11 +53,6 @@ public class GoToFileAction extends GotoActionBase implements DumbAware {
                 }
             }
         };
-
-        /* Custom popup with advanced options.
-        GoToFileProvider provider = new GoToFileProvider(getPsiContext(e));
-        showNavigationPopup(e, model, callback, "File name matching pattern", true, true, (ChooseByNameItemProvider)provider);
-        */
 
         showNavigationPopup(e, model, callback);
     }
