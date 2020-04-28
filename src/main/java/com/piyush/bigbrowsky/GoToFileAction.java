@@ -30,7 +30,7 @@ public class GoToFileAction extends GotoActionBase implements DumbAware {
         if (project == null) return;
 
         boolean isElasticSearchMode = Utils.checkIfElasticSearchModeIsEnabled();
-        dataSource = isElasticSearchMode ? new ElasticSearchClient(project) : new DirectoryWatcherClient(project);
+        dataSource = isElasticSearchMode ? new ElasticSearchClient(project) : new FFClient(project);
         dataSource.connect();
 
         ChooseByNameContributor[] chooseByNameContributors = { new GoToFileContributor(dataSource) };
