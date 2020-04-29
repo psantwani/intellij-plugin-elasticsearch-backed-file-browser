@@ -40,7 +40,7 @@ public class FFClient implements DataSource {
         ProcessBuilder builder = new ProcessBuilder();
         builder.directory(new File(basePath));
 
-        String[] commands = {"/bin/sh", "-c", "ff -G -D" + term + " | head -n 15"};
+        String[] commands = {"/bin/sh", "-c", "ff -G -D " + term + " | head -n 15"};
         builder.command(commands);
         List<Object> response = new ArrayList<>();
         try {
