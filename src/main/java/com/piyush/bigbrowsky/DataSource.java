@@ -1,8 +1,5 @@
 package com.piyush.bigbrowsky;
 
-import com.intellij.openapi.project.Project;
-import org.elasticsearch.action.search.SearchResponse;
-
 import java.util.List;
 
 public interface DataSource {

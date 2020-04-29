@@ -1,6 +1,7 @@
 package com.piyush.bigbrowsky;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import org.apache.http.HttpHost;
@@ -17,11 +18,8 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.ScoreSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +31,7 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 
 public class ElasticSearchClient implements DataSource {
 
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
+    private static final Logger logger = Logger.getInstance(ElasticSearchClient.class.getName());
 
     private static final ObjectMapper mapper = new ObjectMapper();
     private static RestHighLevelClient client = null;

@@ -3,17 +3,15 @@ package com.piyush.bigbrowsky;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.intellij.navigation.ChooseByNameContributor;
 import com.intellij.navigation.NavigationItem;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.lang.invoke.MethodHandles;
 import java.util.*;
 
 public class GoToFileContributor implements ChooseByNameContributor {
 
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
+    private static final Logger logger = Logger.getInstance(GoToFileContributor.class.getName());
     private static final ObjectMapper mapper = new ObjectMapper();
     private static DataSource dataSource = null;
 

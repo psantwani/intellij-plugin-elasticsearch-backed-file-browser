@@ -1,27 +1,26 @@
 package com.piyush.bigbrowsky;
 
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
-import org.buildobjects.process.ProcBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.lang.invoke.MethodHandles;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FFClient implements DataSource {
 
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
+    private static Logger logger = Logger.getInstance(FFClient.class.getName());
 
     private static Project project = null;
     private static String basePath = null;
+    private static File basePathDir = null;
 
     public FFClient(Project project){
         this.project = project;
         this.basePath = project.getBasePath();
+        this.basePathDir = new File(basePath);
     }
 
     @Override
@@ -38,14 +37,12 @@ public class FFClient implements DataSource {
 
     @Override
     public List<Object> search(String term) {
-        ProcessBuilder builder = new ProcessBuilder();
-        builder.directory(new File(basePath));
+        logger.info("FF mode: Searching " + term);
 
-        String[] commands = {"/bin/sh", "-c", "ff -G -D " + term + " | head -n 15"};
-        builder.command(commands);
         List<Object> response = new ArrayList<>();
         try {
-            Process process = builder.start();
+            String[] commands = {"/bin/sh", "-c", "ff -G -D " + term + " | head -n 15"};
+            Process process=Runtime.getRuntime().exec(commands, null, basePathDir);
             process.waitFor();
 
             BufferedReader buf = new BufferedReader(new InputStreamReader(process.getInputStream()));
