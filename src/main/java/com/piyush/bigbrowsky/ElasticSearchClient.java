@@ -45,7 +45,6 @@ public class ElasticSearchClient implements DataSource {
     public ElasticSearchClient(Project project){
         this.project = project;
         this.projectName = project.getName();
-        this.projectName = "fievel";
     }
 
     public void connect(){
