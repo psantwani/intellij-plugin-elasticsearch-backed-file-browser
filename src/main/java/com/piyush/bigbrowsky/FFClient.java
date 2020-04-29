@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.invoke.MethodHandles;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +65,10 @@ public class FFClient implements DataSource {
 
     @Override
     public DataSourceSearchResponseModel transform(Object matchedObj) {
-        return null;
+        String line = (String)matchedObj;
+        String realPath = basePath + line.substring(1);
+        String virtualPath = Utils.ellipsize(line.substring(2), 40);
+        String fileName = Paths.get(realPath).getFileName().toString();
+        return new DataSourceSearchResponseModel(fileName, virtualPath, realPath);
     }
 }
