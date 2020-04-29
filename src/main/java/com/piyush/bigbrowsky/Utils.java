@@ -11,7 +11,7 @@ import com.intellij.ui.awt.RelativePoint;
 public class Utils {
 
     public static boolean checkIfElasticSearchModeIsEnabled(){
-        boolean esModeEnabled = false;
+        boolean esModeEnabled = true;
         boolean esRunning = true;
         return esModeEnabled && esRunning;
     }
