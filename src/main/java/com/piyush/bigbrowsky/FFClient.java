@@ -40,7 +40,7 @@ public class FFClient implements DataSource {
         ProcessBuilder builder = new ProcessBuilder();
         builder.directory(new File(basePath));
 
-        String[] commands = {"ff -H " + term + " | head -n 10"};
+        String[] commands = {"/bin/sh", "-c", "ff -G -D" + term + " | head -n 15"};
         builder.command(commands);
         List<Object> response = new ArrayList<>();
         try {
@@ -51,7 +51,7 @@ public class FFClient implements DataSource {
             String line;
             int counter = 0;
 
-            while ((line=buf.readLine())!=null && counter <= 10) {
+            while ((line=buf.readLine())!=null && counter <= 15) {
                 response.add(line);
                 counter++;
             }
