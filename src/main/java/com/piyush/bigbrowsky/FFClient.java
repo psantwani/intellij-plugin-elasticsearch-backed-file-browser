@@ -37,24 +37,31 @@ public class FFClient implements DataSource {
 
     @Override
     public List<Object> search(String term) {
-        logger.info("FF mode: Searching " + term);
-
         List<Object> response = new ArrayList<>();
+
         try {
-            String[] commands = {"/bin/sh", "-c", "ff -G -D " + term + " | head -n 15"};
-            Process process=Runtime.getRuntime().exec(commands, null, basePathDir);
-            process.waitFor();
+            // String[] commands = {"/bin/sh", "-c", "ff -G -D " + term};
+            String[] commands = {"ls"};
+            ProcessBuilder pb = new ProcessBuilder()
+                    .command(commands)
+                    .directory(basePathDir);
 
-            BufferedReader buf = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            int counter = 0;
+            Process p = null;
+            p = pb.start();
 
-            while ((line=buf.readLine())!=null && counter <= 15) {
-                response.add(line);
-                counter++;
+            StreamGobbler outputGobbler = new StreamGobbler(p.getInputStream(), "OUTPUT");
+            Thread thread = new Thread(outputGobbler);
+            thread.start();
+
+            int exit = p.waitFor();
+            thread.join();
+            response = outputGobbler.getValue();
+
+            if (exit != 0) {
+                logger.error(String.format("runCommand returned %d", exit));
             }
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
         }
 
         return response;
@@ -67,5 +74,31 @@ public class FFClient implements DataSource {
         String virtualPath = Utils.ellipsize(line.substring(2), 40);
         String fileName = Paths.get(realPath).getFileName().toString();
         return new DataSourceSearchResponseModel(fileName, virtualPath, realPath);
+    }
+
+    public static class StreamGobbler extends Thread {
+
+        private final InputStream is;
+        private volatile List<Object> lines = new ArrayList<>();
+
+        public StreamGobbler(InputStream is, String type) {
+            this.is = is;
+        }
+
+        @Override
+        public void run() {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(is));) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    lines.add(line);
+                }
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
+
+        public List<Object> getValue(){
+            return lines;
+        }
     }
 }
