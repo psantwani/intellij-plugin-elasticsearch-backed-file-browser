@@ -57,7 +57,7 @@ public class FFClient implements DataSource {
             response = outputGobbler.getValue();
 
             if (exit != 0) {
-                logger.error(String.format("runCommand returned %d", exit));
+                logger.error(String.format("FFClient search returned %d", exit));
             }
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
