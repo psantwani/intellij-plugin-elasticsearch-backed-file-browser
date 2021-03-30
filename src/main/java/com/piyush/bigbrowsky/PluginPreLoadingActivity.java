@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
  * A {@link PreloadingActivity} to demonstrate how a plugin could run some (possibly expensive)
  * activities on startup.
  */
-public class PluginPreloadingActivity extends PreloadingActivity {
-    private static final Logger LOG = Logger.getInstance(MyPreloadingActivity.class);
+public class PluginPreLoadingActivity extends PreloadingActivity {
+    private static final Logger LOG = Logger.getInstance(PluginPreLoadingActivity.class);
 
     /**
      * This method is run in IntelliJ's pooled background thread. Only one PreloadingActivity is run at the same time.
