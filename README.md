@@ -1,4 +1,4 @@
-**Pre-requisites:**
+**Steps:**
 1. Download and run ES (6.x or 7.x)
 2. Install appropriate Java version to work with fscrawler.   
 3. Download and run Fscrawler. fscrawler-es7-2.7-SNAPSHOT runs with Java 14.
